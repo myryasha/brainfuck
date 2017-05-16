@@ -3,30 +3,23 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-<link rel="stylesheet" href="css/bootstrap.css" >
-<link rel="stylesheet" href="css/main.css" >
-
+	<link rel="stylesheet" href="css/bootstrap.css" >
+	<link rel="stylesheet" href="css/main.css" >
 
 </head>
 <body>
 <div class="container">
-<table id="results" class=" results table table-striped table-bordered table-hover">
-	<thead>
-		<tr>
-			<td data-direction data-type='id'>id</td>
-			<td data-direction data-type='firstName'>First Name</td>
-			<td data-direction data-type='lastName'>Last Name</td>
-			<td data-direction data-type='email'>email</td>
-			<td data-direction data-type='phone'>phone</td>
-		</tr>
-	</thead>
-	
-</table>
-
-<div id="progress">0%</div>
-<div id="pages"></div>
+<div class="links">
+	<div class="button" data-link = "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32}">Маленький объем данных</div>
+	<div class="button" data-link = "http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32}">Большой объем данных</div>
 </div>
 
+</div>
+
+<form class='form hidden'>
+	<input type="text">
+	<input type="submit" value = 'find'>
+</form>
 
 
 <script src="js/main.js"></script>
