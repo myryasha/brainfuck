@@ -134,7 +134,7 @@ class Table {
 	clearTable() {
 		let tbodys = this.results.querySelectorAll('tbody');
 		for (var i = 0; i < tbodys.length; i++) {
-			tbodys[i].remove();
+			this.results.removeChild(tbodys[i])
 		};
 	}
 

@@ -140,7 +140,7 @@ var Table = function () {
 		value: function clearTable() {
 			var tbodys = this.results.querySelectorAll('tbody');
 			for (var i = 0; i < tbodys.length; i++) {
-				tbodys[i].remove();
+				this.results.removeChild(tbodys[i]);
 			};
 		}
 	}, {
