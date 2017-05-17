@@ -1,0 +1,98 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, dfn, em, img, ins, kbd, q, s, samp, small, strike, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/*RE-RESET*/
+strong {
+  font-weight: bold; }
+
+em {
+  font-style: italic; }
+
+u {
+  text-decoration: underline; }
+
+strike {
+  text-decoration: line-through; }
+
+body, .progress-bar, .button {
+  margin: 30px; }
+
+.progress-bar {
+  background-color: whiteSmoke;
+  border-radius: 7px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+  width: 250px;
+  height: 15px;
+  position: relative;
+  display: block; }
+  .progress-bar:after {
+    content: attr(data-value);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+    text-align: center;
+    line-height: 15px;
+    color: #000; }
+  .progress-bar:before {
+    content: '';
+    display: block;
+    width: 20%;
+    background: #63c226;
+    height: 100%;
+    background: linear-gradient(to bottom, #83ec4b 1%, #63c226 50%, #83ec4b 100%);
+    transition: all .5s ease;
+    border-radius: 7px; }
+
+.button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  width: 100px;
+  height: 25px;
+  border: 1px solid #cbcbcb;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #f2f2f2 1%, #d6d6d6 100%);
+  box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.31);
+  font-family: sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 25px;
+  text-align: center; }
+  .button:hover {
+    box-shadow: inset 1px 1px 2px 0px rgba(0, 0, 0, 0.31); }
+  .button-disabled {
+    color: #ccc;
+    cursor: default; }
+    .button-disabled:hover {
+      box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.31); }
