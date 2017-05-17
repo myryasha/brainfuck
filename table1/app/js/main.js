@@ -14,6 +14,7 @@ class Table {
 		this.activeRow;
 
 		this.pages = [];
+		this.tempJson = [];
 		this.firstPage = true;
 		this.pageActive = 0;
 		this.json = [];
@@ -45,8 +46,7 @@ class Table {
 					this.pageActive = 0;
 					this.firstPage = false;
 					progress.classList.add('hidden');
-
-					this.renderTable(this.json, true)
+					this.renderTable(this.json, 0)
 				};
 				progress.innerHTML = Math.round(this.json.length / this.maxElems * 100) + '%';
 			};
@@ -66,8 +66,8 @@ class Table {
 				progress.classList.add('hidden');
 				return;
 			};
-
-			this.renderTable(this.json, false);
+			this.clearTable();
+			this.renderTable(this.json, 0);
 
 
 
@@ -95,7 +95,7 @@ class Table {
 		// про события в таблице
 		// 
 
-
+		// сортировка по столбцам
 		this.results.addEventListener('click', (event) => {
 
 			if (event.target.parentElement.hasAttribute('data-head')) {
@@ -103,12 +103,13 @@ class Table {
 					return;
 				};
 
-				this.json = this.json.sort(this.tableSort.bind({
+				this.clearTable();
+				this.renderTable(this.tempJson.sort(this.tableSort.bind({
 					type: event.target.getAttribute('data-type'),
 					direction: event.target.getAttribute('data-direction')
-				}));
+				})), this.pageActive);
+
 				this.toggleDirection(event.target);
-				this.renderTable(this.json);
 
 			};
 
@@ -128,6 +129,65 @@ class Table {
 	}
 
 	// end constructor
+
+	//
+	clearTable() {
+		let tbodys = this.results.querySelectorAll('tbody');
+		for (var i = 0; i < tbodys.length; i++) {
+			tbodys[i].remove();
+		};
+	}
+
+	renderTable(json, activePage) {
+
+		this.pageActive = activePage;
+		this.pages = [];
+		this.tempJson = json; // сохраняем массив элементов выведенных на страницу
+		for (let i = 0; i < Math.ceil(json.length / 50); i++) {
+			this.pages[i] = json.slice(i * this.maxElems, i * this.maxElems + this.maxElems); // собираем массив по стрницам
+			this.results.insertAdjacentHTML('beforeEnd', this.renderPage(this.pages[i], i, false));
+		};
+
+		this.temp[activePage].classList.remove('hidden');
+		this.pagesNav.innerHTML = this.renderPagination(this.pages.length, activePage);
+
+	}
+
+	renderPagination(quan, active = 0) {
+			let pagesCounter = '';
+			for (let i = 0; i < quan; i++) {
+				if (i == active) {
+					pagesCounter += `<li class='nav-active' data-page-link=${i}>${i + 1}</li>`;
+				} else {
+					pagesCounter += `<li data-page-link=${i}>${i + 1}</li>`;
+				}
+
+			};
+			return `<ul>${pagesCounter}</ul>`;
+		}
+		//
+		//
+	renderPage(rows = [], pageId = 0, isActive = false) {
+		let result = '';
+		if (isActive) {
+			isActive = '';
+
+		} else {
+			isActive = 'hidden';
+		}
+		for (let i = 0; i < rows.length; i++) {
+			result += `
+				<tr data-id='${i}'>
+					<td>${rows[i].id}</td>
+					<td>${rows[i].firstName}</td>
+					<td>${rows[i].lastName}</td>
+					<td>${rows[i].email}</td>
+					<td>${rows[i].phone}</td>
+				</tr>`
+		};
+		return `<tbody data-page="${pageId}" class="${isActive} "> ${result} </tbody>`;
+
+	}
 	renderLayout() {
 		return `
 				<table class=" results table table-striped table-bordered table-hover">
@@ -175,58 +235,6 @@ class Table {
 
 	}
 
-	renderTable(json, firstRender = false) { // спорное решение, пересмотреть надо.
-
-		if (!firstRender) {
-			this.pages = [];
-			this.firstPage = true;
-			let tbodys = this.results.querySelectorAll('tbody');
-			for (var i = 0; i < tbodys.length; i++) {
-				tbodys[i].remove();
-			};
-		};
-		let pagesCounter = ''
-
-		for (let i = 0; i < Math.ceil(json.length / 50); i++) {
-			this.pages[i] = json.slice(i * this.maxElems, i * this.maxElems + this.maxElems); // собираем массив по стрницам
-			pagesCounter += `<li data-page-link=${i}>${i + 1}</li>`;
-		};
-
-		for (let i = 0; i <= this.pages.length; i++) {
-			if (!this.firstPage && i == 0) { // если первая страница уже создана, тогда пропускаем ее создание. 
-				continue;
-			}
-			this.results.insertAdjacentHTML('beforeEnd', this.renderPage(this.pages[i], i, false));
-		};
-
-		this.temp[this.pageActive].classList.remove('hidden');
-		this.pagesNav.innerHTML = `<ul>${pagesCounter}</ul>`;
-		this.navElements[this.pageActive].classList.add('nav-active');
-	}
-
-	renderPage(rows = [], pageId = 0, isActive = false) {
-		let result = '';
-		if (isActive) {
-			isActive = '';
-
-		} else {
-			isActive = 'hidden';
-		}
-		for (let i = 0; i < rows.length; i++) {
-			result += `
-				<tr data-id='${i}'>
-					<td>${rows[i].id}</td>
-					<td>${rows[i].firstName}</td>
-					<td>${rows[i].lastName}</td>
-					<td>${rows[i].email}</td>
-					<td>${rows[i].phone}</td>
-				</tr>`
-		};
-		return `<tbody data-page="${pageId}" class="${isActive} "> ${result} </tbody>`;
-
-	}
-
-
 	tryParseJson(json = '[') {
 		try {
 			return json = JSON.parse(json + ']');
@@ -262,37 +270,45 @@ class Table {
 		};
 
 	}
+
+	search(searchString) {
+		if (this.json.length == 0) return;
+
+		if (searchString == '') {
+			this.pageActive = 0;
+			this.clearTable();
+			this.renderTable(this.json, 0);
+		}
+
+		let serachJson = this.json.filter((person) => {
+			for (let value in person) {
+				if (person[value].toString().toLowerCase().indexOf(searchString.toLowerCase()) != -1) {
+					return true;
+				};
+			}
+		});
+
+		if (serachJson.length == 0) return; // сюда навешиваем что делать, если ничего не нашли. В нашем случае ничего не делаем.
+		this.clearTable();
+		this.renderTable(serachJson, 0);
+	}
 }
 
 
 
-// let table = new Table("http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&adress={addressObject}&description={lorem|32}", document.querySelector('.container'));
-let form = document.querySelector('.form');
-let links = document.querySelector('.links');
+let find = document.querySelector('.find'),
+	links = document.querySelector('.links'),
+	table;
 
 links.addEventListener('click', (event) => {
 	if (event.target.hasAttribute('data-link')) {
-		let table = new Table(event.target.getAttribute('data-link'), document.querySelector('.container'));
+		table = new Table(event.target.getAttribute('data-link'), document.querySelector('.container'));
 
-		form.classList.remove('hidden');
-		form.addEventListener('submit', (event) => {
+		find.classList.remove('hidden');
+		find.addEventListener('submit', (event) => {
 			event.preventDefault()
-			if (table.json.length == 0) return;
 
-			let searchString = form.querySelector('[type=text]').value;
-			if (searchString == '') table.renderTable(table.json);
-
-			let serachJson = table.json.filter((person) => {
-				for (let value in person) {
-					if (person[value].toString().toLowerCase().indexOf(searchString.toLowerCase()) != -1) {
-						return true;
-					};
-				}
-			});
-
-			if (serachJson.length == 0) return; // сюда навешиваем что делать, если ничего не нашли. В нашем случае ничего не делаем.
-			table.renderTable(serachJson);
-
+			table.search(find.querySelector('[type=text]').value)
 		})
 	};
 })

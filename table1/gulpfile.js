@@ -7,6 +7,7 @@ var gulp = require('gulp'),
 	connect = require('gulp-connect'),
 	sass = require('gulp-sass'),
 	rigger = require('gulp-rigger'),
+	babel = require('gulp-babel'),
 	path = require('path');
 
 gulp.task('connect', function () {
@@ -38,6 +39,9 @@ gulp.task('html', function () {
 gulp.task('js', function () {
 	gulp.src(['app/js/*.js', 'app/js/*.json'])
 		.pipe(rigger())
+	.pipe(babel({
+		compact: false
+	}))
 		.pipe(gulp.dest('./dist/js'))
 		.pipe(connect.reload());
 });

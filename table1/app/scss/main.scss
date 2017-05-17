@@ -1,43 +1,8 @@
 @import '_reset';
 
-
-
-.hidden {
-	display: none;
-}
-
-#progress {
-	width: 500px;
-	height: 100px;
-	background: #ccc;
-	font-size: 50px;
-	margin: auto;
-	line-height: 100px;
-	text-align: center;
-
-}
-
-.pages {
-	margin-bottom: 50px;
-	ul{
-	display: flex;
-	    justify-content: space-around;
-	}
-	li {
-		text-decoration: underline;
-		color: #337ab7;
-		cursor: pointer;
-
-	}
-	.nav-active {
-		color: #f00;
-	}
-	
-}
-
 .container {
 	position: relative;
-	padding-top: 50px;
+	padding-top: 15px;
 	padding-bottom: 150px;
 }
 .results {
@@ -88,10 +53,34 @@
 			
 		}
 	}
+}
 
-	
+.progress {
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
 
 }
+
+.pages {
+	margin-bottom: 50px;
+	ul{
+	display: flex;
+	    justify-content: space-around;
+	}
+	li {
+		text-decoration: underline;
+		color: #337ab7;
+		cursor: pointer;
+
+	}
+	.nav-active {
+		color: #f00;
+	}
+	
+}
+
+
 
 // описать правила, чтоб не прыгало ничего
 .block {
@@ -99,10 +88,10 @@
 
 }
 
-.form {
-	position: absolute;
-	top: 0;
-	right: 0;
+.find {
+	position: fixed;
+	top: 15px;
+	right: 15px;
 	height: 100px;
 
 }
@@ -121,4 +110,8 @@
 		border-radius: 3px;
 		font-size: 35px;
 	}
+}
+
+.hidden {
+	display: none;
 }

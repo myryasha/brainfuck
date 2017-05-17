@@ -1,3 +1,5 @@
+"use strict";
+
 [{
 	"id": 569,
 	"firstName": "Melody",
@@ -1662,4 +1664,4 @@
 		"zip": "64886"
 	},
 	"description": "nec pharetra non aliquam odio consectetur aliquam etiam odio sit porttitor magna quis magna lorem dui donec tincidunt pulvinar placerat tortor hendrerit facilisis elementum massa tortor mattis pharetra ipsum sagittis massa placerat"
-}]
+}];
